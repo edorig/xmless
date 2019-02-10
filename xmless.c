@@ -17,6 +17,7 @@
 #include <Xm/List.h>
 #include <Xm/PushB.h>
 #include <Xm/Form.h>
+#include <Xm/SelectioB.h>
 
 
 #include <stdio.h>
@@ -29,6 +30,9 @@ String fallback_resources[] = {
     NULL,
 };
 
+/* Add some prototypes */ 
+void dostdin (FILE*); 
+void dofile(FILE*, char*, char*);
 
 Widget toplevel;
 int popups;
@@ -48,7 +52,7 @@ static XtCallbackRec call_kill[] = { {(XtCallbackProc)killpop, (caddr_t)NULL},
                             { (XtCallbackProc)NULL, (caddr_t)NULL} };
 
 
-main(argc,argv)
+int main(argc,argv)
 int argc;
 char* argv[];
 {
@@ -87,8 +91,7 @@ XtAppContext app_con;
      
 }
 
-dostdin(fp)
-FILE* fp;
+void dostdin(FILE *fp)
 {
     char c;
     char *name=tmpnam(NULL);
@@ -103,9 +106,7 @@ FILE* fp;
     
 }
 
-void view_window(str, title)
-char *str;
-char *title;
+void view_window(char *str, char *title)
 {
 Widget pop, textwindow, outer;
 Arg al[10];
@@ -151,10 +152,7 @@ int ac;
 }
 
 
-dofile(fp, name, title)
-FILE* fp;
-char *name;
-char *title;
+void dofile(FILE *fp, char *name, char *title)
 {
 struct stat etat_fichier;
  int zozo;   
