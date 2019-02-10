@@ -1,0 +1,34 @@
+.TH xmless 1 "22 March 1991"
+.SH NAME
+xmless \- X11 file viewer
+.SH SYNOPSIS
+.B xmless [filename ...]
+.LP
+
+.SH DESCRIPTION
+
+xmless is similar to
+.I more;
+it displays the contents of files in a window.  It can also
+display text read from standard input, and thus may be used
+at the end of a pipeline.  The window is not opened until
+the whole file has been read.
+
+A separate window is opened for each filename supplied.  Note
+that standard input is only read if no filenames are given.  To
+display standard input alongside other files, include '-' as a
+parameter.
+
+.SH SEE ALSO
+.nf
+xless(1)
+more(1)
+.fi
+
+.SH BUGS
+Mail andy@uk.ac.lancs.comp if you find any.
+
+
+.SH AUTHORS
+Andy Colebourne and Andrew Brooks
+
