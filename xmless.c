@@ -6,7 +6,8 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include <errno.h> 
+#include <errno.h>
+#include <locale.h> 
 #include <X11/Intrinsic.h>
 #include <X11/Xlib.h>
 #include <X11/X.h>
@@ -24,7 +25,10 @@
 #include <sys/file.h>
 
 
+/* Important to display UTF-8 characters: we need a font with ISO10646-1 encoding 
+   defined in the fallback resources */ 
 String fallback_resources[] = {
+"*fontList: -misc-fixed-medium-r-normal--14-130-75-75-c-70-iso10646-1",
     "*textwindow.rows:                  24",
     "*textwindow.columns:               80",
     NULL,
@@ -60,6 +64,7 @@ char** arg = argv;
 FILE* fp;
 XtAppContext app_con;
 
+ XtSetLanguageProc(NULL,NULL,NULL); 
     toplevel = XtAppInitialize(&app_con, "Xbrowser", NULL, 0,
                                &argc, argv, fallback_resources, NULL, 0);
     popups = 0;
@@ -115,7 +120,7 @@ int ac;
     ac = 0;
     XtSetArg(al[ac], XmNunmapCallback, call_kill);  ac++;
 
-    XtSetArg(al[ac], XmNokLabelString, XmStringCreateLtoR("Close", XmSTRING_DEFAULT_CHARSET) ); ac++;
+    XtSetArg(al[ac], XmNokLabelString, XmStringCreateLtoR("Close", XmFONTLIST_DEFAULT_TAG) ); ac++;
     pop = XmCreatePromptDialog(toplevel, "textpopup", al, ac);
     outer = XtParent(pop);
 
@@ -131,6 +136,11 @@ int ac;
     XtSetArg(al[ac], XmNbottomAttachment, XmATTACH_FORM); ac++;
     XtSetArg(al[ac], XmNeditMode, XmMULTI_LINE_EDIT); ac++;
     XtSetArg(al[ac], XmNscrollLeftSide, TRUE); ac++;
+    /* This is actually useless: we don't need to define a render table or 
+     a fontlist to be able to display UTF-8 characters, we simply need a fallback 
+     ISO10646-1 font defined in fallback_resources. 
+        XtSetArg(al[ac],XmNrenderTable,NULL); ac++;    
+        XtSetArg(al[ac],XmNfontList,XmFONTLIST_DEFAULT_TAG); ac++; */ 
     textwindow = XmCreateScrolledText(pop, "textwindow", al, ac);
     XtManageChild(textwindow);
 
